@@ -3,10 +3,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Map;
 import java.util.Objects;
 
-import static java.util.Map.*;
 
 public class CipherMainPanel extends JFrame implements ActionListener {
     JRadioButton encryptButton;
@@ -133,46 +131,37 @@ public class CipherMainPanel extends JFrame implements ActionListener {
         outFile.setBounds(50 ,275,20,20);
         addFile.setBounds(50 ,325,20,20);
 
-        inFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == inFile)
-                {
-                    JFileChooser fileChooser = new JFileChooser();
-                    int response = fileChooser.showOpenDialog(null);
-                    if(response == JFileChooser.APPROVE_OPTION)
-                        inPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                    else
-                       JOptionPane.showMessageDialog(null,"Incorrect input FilePath","Error",JOptionPane.ERROR_MESSAGE);
-                }
+        inFile.addActionListener(e -> {
+            if(e.getSource() == inFile)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showOpenDialog(null);
+                if(response == JFileChooser.APPROVE_OPTION)
+                    inPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                else
+                   JOptionPane.showMessageDialog(null,"Incorrect input FilePath","Error",JOptionPane.ERROR_MESSAGE);
             }
         });
-        outFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == outFile)
-                {
-                    JFileChooser fileChooser = new JFileChooser();
-                    int response = fileChooser.showSaveDialog(null);
-                    if(response == JFileChooser.APPROVE_OPTION)
-                        outPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                    else
-                        JOptionPane.showMessageDialog(null,"Incorrect output FilePath","Error",JOptionPane.ERROR_MESSAGE);
-                }
+        outFile.addActionListener(e -> {
+            if(e.getSource() == outFile)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showSaveDialog(null);
+                if(response == JFileChooser.APPROVE_OPTION)
+                    outPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                else
+                    JOptionPane.showMessageDialog(null,"Incorrect output FilePath","Error",JOptionPane.ERROR_MESSAGE);
             }
         });
-        addFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(e.getSource() == addFile)
-                {
-                    JFileChooser fileChooser = new JFileChooser();
-                    int response = fileChooser.showOpenDialog(null);
-                    if(response == JFileChooser.APPROVE_OPTION)
-                        addPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
-                    else
-                        JOptionPane.showMessageDialog(null,"Incorrect additional FilePath","Error",JOptionPane.ERROR_MESSAGE);
-                }
+        addFile.addActionListener(e -> {
+            if(e.getSource() == addFile)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showOpenDialog(null);
+                if(response == JFileChooser.APPROVE_OPTION)
+                    addPath.setText(fileChooser.getSelectedFile().getAbsolutePath());
+                else
+                    JOptionPane.showMessageDialog(null,"Incorrect additional FilePath","Error",JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -193,58 +182,48 @@ public class CipherMainPanel extends JFrame implements ActionListener {
         startButton = new JButton();
         startButton.setText("Сalculation start");
         startButton.setBounds(125,375,200,40);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        startButton.addActionListener(e -> {
 
-            }
         });
 
 
 
 
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inPath.getText()));
-                    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outPath.getText()))
-                )
-                {       Alphabet alphabet = new Alphabet(Objects.requireNonNull(alphabetType.getSelectedItem()).toString(), punctuationCheckBox.getState());
-                        CipherCeasar cipherCeasar = new CipherCeasar(alphabet);
-                        cipherCeasar.setInputArray(bufferedReader);
-                    cipherCeasar.getAlphabet().getAlphabetMap().toSetForward().stream().map(symbol -> symbol.getValue() + "=" + symbol.getKey() + " ").forEach(System.out::print);
-                    System.out.println(cipherCeasar.getAlphabet().getAlphabetMap().size());
-                        System.out.println(cipherCeasar.getInputArray());
-                        if(encryptButton.isSelected()) {
-                            cipherCeasar.encode(Integer.parseInt(key.getText()));
+        startButton.addActionListener(e -> {
+            try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inPath.getText()));
+                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outPath.getText()))
+            )
+            {       Alphabet alphabet = new Alphabet(Objects.requireNonNull(alphabetType.getSelectedItem()).toString(), punctuationCheckBox.getState());
+                    CipherCeasar cipherCeasar = new CipherCeasar(alphabet);
+                    cipherCeasar.setInputArray(bufferedReader);
+                    if(encryptButton.isSelected()) {
+                        cipherCeasar.encode(Integer.parseInt(key.getText()));
+                    }
+                    else if (decryptButton1.isSelected()) {
+                        try(BufferedReader bufferedAdditional = new BufferedReader(new FileReader(addPath.getText())))
+                        {
+                            cipherCeasar.decode(bufferedAdditional,"DecryptBF");
                         }
-                        else if (decryptButton1.isSelected()) {
-                            try(BufferedReader bufferedAdditional = new BufferedReader(new FileReader(addPath.getText())))
-                            {
-                                cipherCeasar.decode(bufferedAdditional,"DecryptBF");
-                            }
+                    }
+                    else if (decryptButton2.isSelected()) {
+                        try(BufferedReader bufferedAdditional = new BufferedReader(new FileReader(addPath.getText())))
+                        {
+                            cipherCeasar.decode(bufferedAdditional,"DecryptFA");
                         }
-                        else if (decryptButton2.isSelected()) {
-                            try(BufferedReader bufferedAdditional = new BufferedReader(new FileReader(addPath.getText())))
-                            {
-                                cipherCeasar.decode(bufferedAdditional,"DecryptFA");
-                            }
-                        }
-                            System.out.println(cipherCeasar.getOutputArray());
-                        for (Character character: cipherCeasar.getOutputArray()) {
-                            bufferedWriter.write(character);
-                        }
-
-
-                }
-                catch (Exception exception)
-                {
-                    JOptionPane.showMessageDialog(null,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-                }
-
+                    }
+                    for (Character character: cipherCeasar.getOutputArray()) {
+                        bufferedWriter.write(character);
+                    }
 
 
             }
+            catch (Exception exception)
+            {
+                JOptionPane.showMessageDialog(null,exception.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+            }
+
+
+
         });
 
 
@@ -256,7 +235,7 @@ public class CipherMainPanel extends JFrame implements ActionListener {
 
         this.setLayout(null);
         this.setVisible(true);
-        //"Cipher Ceasar App"
+
 
     }
 
@@ -266,9 +245,7 @@ public class CipherMainPanel extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        var mode = "Encrypt";
         if(e.getSource() == encryptButton) {
-            mode = "Encrypt";
             addFile.setVisible(false);
             additionalFile.setVisible(false);
             addPath.setVisible(false);
@@ -278,7 +255,6 @@ public class CipherMainPanel extends JFrame implements ActionListener {
         }
         else if(e.getSource() == decryptButton1) {
 
-            mode = "DecryptBF";
             addFile.setVisible(true);
             additionalFile.setVisible(true);
             addPath.setVisible(true);
@@ -287,7 +263,6 @@ public class CipherMainPanel extends JFrame implements ActionListener {
         }
         else
         {
-            mode = "DecryptFA";
             addFile.setVisible(true);
             additionalFile.setVisible(true);
             addPath.setVisible(true);

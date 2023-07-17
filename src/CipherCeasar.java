@@ -96,9 +96,6 @@ public class CipherCeasar {
             int inputKey = alphabet.getAlphabetMap().getBackward(treeMaxEntry(frequencyMapInput).getKey());
             int additionalKey = alphabet.getAlphabetMap().getBackward(treeMaxEntry(frequencyMapAdditional).getKey());
             int supposedKey = additionalKey - inputKey;
-//            System.out.println(inputKey);
-//            System.out.println(additionalKey);
-//            System.out.println(supposedKey);
             encode(supposedKey);
         }
     }
@@ -152,19 +149,19 @@ public class CipherCeasar {
 
     }
 
-    public ArrayList<Character> getInputArray()
-    {
-        return this.inputArray;
-    }
+//    public ArrayList<Character> getInputArray()
+//    {
+//        return this.inputArray;
+//    }
     public ArrayList<Character> getOutputArray()
     {
         return this.outputArray;
     }
 
-    public Alphabet getAlphabet()
-    {
-        return this.alphabet;
-    }
+//    public Alphabet getAlphabet()
+//    {
+//        return this.alphabet;
+//    }
     public void setInputArray(BufferedReader bufferedReader) throws Exception
     {
             if(this.inputArray.size() == 0)

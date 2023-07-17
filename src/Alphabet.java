@@ -1,15 +1,12 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 public class Alphabet {
 
-    private String typeAlphabet;
-    private int size;
+    private final int size;
     private TwoWayHashMap<Integer,Character> alphabetMap;
     Alphabet(String typeAlphabetMap, boolean addPunctuation){
 
-        this.typeAlphabet = typeAlphabetMap;
-        if(this.typeAlphabet.equals("Cyrillic"))
+        if(typeAlphabetMap.equals("Cyrillic"))
         {
             alphabetMap = new TwoWayHashMap<>();
             addGroup(6,1040);
@@ -33,6 +30,7 @@ public class Alphabet {
             addGroup(6,91);
             addGroup(4,123);
         }
+        assert alphabetMap != null;
         this.size = alphabetMap.size();
 
 

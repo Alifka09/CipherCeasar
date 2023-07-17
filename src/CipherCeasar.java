@@ -35,14 +35,12 @@ public class CipherCeasar {
             StringTokenizer wordString;
             StringBuilder inputString = new StringBuilder();
             StringBuilder additionalString = new StringBuilder();
-            HashSet<String> additionalArray = new HashSet<>();
             int c;
             while ((c = bufferedAdditional.read()) != -1) {
                 additionalString.append((char) c);
             }
-            for(String str:additionalString.toString().split("\n")) {
-                additionalArray.add(str);
-            }
+            HashSet<String> additionalArray;
+            additionalArray = new HashSet<>(Arrays.asList(additionalString.toString().split("\n")));
 
             int count;
             for (int a = 0; a < alphabet.getSize(); a++) {
@@ -53,7 +51,7 @@ public class CipherCeasar {
                         inputString.append(alphabet.getAlphabetMap().getForward((alphabet.getAlphabetMap().getBackward(symbol) + a) % alphabet.getSize()));
                     } catch (Exception e)
                     {
-
+                        System.out.println(a + "===" + e.getMessage());
                     }
                     }
 

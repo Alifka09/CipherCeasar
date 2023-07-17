@@ -15,18 +15,18 @@ public class CipherCeasar {
         this.outputArray = new ArrayList<>();
 
     }
-    CipherCeasar(Alphabet alphabet,ArrayList<Character> inputArray)
-    {
-        this.alphabet = alphabet;
-        this.inputArray = inputArray;
-        this.outputArray = new ArrayList<>();
-    }
-    CipherCeasar(Alphabet alphabet,ArrayList<Character> inputArray,ArrayList<Character> outputArray)
-    {
-        this.alphabet = alphabet;
-        this.inputArray = inputArray;
-        this.outputArray = outputArray;
-    }
+//    CipherCeasar(Alphabet alphabet,ArrayList<Character> inputArray)
+//    {
+//        this.alphabet = alphabet;
+//        this.inputArray = inputArray;
+//        this.outputArray = new ArrayList<>();
+//    }
+//    CipherCeasar(Alphabet alphabet,ArrayList<Character> inputArray,ArrayList<Character> outputArray)
+//    {
+//        this.alphabet = alphabet;
+//        this.inputArray = inputArray;
+//        this.outputArray = outputArray;
+//    }
 
     public void decode(BufferedReader bufferedAdditional, String mode) throws IOException {
         if (mode.equals("DecryptBF")) {
@@ -79,7 +79,8 @@ public class CipherCeasar {
                 }
             }
             System.out.println(inputMaxEntry);
-        encode(inputMaxEntry.getKey());
+            assert inputMaxEntry != null;
+            encode(inputMaxEntry.getKey());
 
         } else if (mode.equals("DecryptFA")) {
             Map<Character, Integer> frequencyMapAdditional = new TreeMap<>();

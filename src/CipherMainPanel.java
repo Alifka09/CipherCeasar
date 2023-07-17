@@ -3,10 +3,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
+
+import static java.util.Map.*;
 
 public class CipherMainPanel extends JFrame implements ActionListener {
     JRadioButton encryptButton;
@@ -29,7 +29,6 @@ public class CipherMainPanel extends JFrame implements ActionListener {
     JTextField key;
     JLabel keyCeasar;
 
-    private static String mode = "Encrypt";
     CipherMainPanel()
     {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +55,7 @@ public class CipherMainPanel extends JFrame implements ActionListener {
                 "Latin",
                 "Cyrillic"
         };
-        alphabetType = new JComboBox(items);
+        alphabetType = new JComboBox<>(items);
         alphabetType.setFont(new Font("My Boli",Font.PLAIN,16));
         alphabetType.setBounds(60 ,175,200,25);
 
@@ -210,13 +209,10 @@ public class CipherMainPanel extends JFrame implements ActionListener {
                 try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inPath.getText()));
                     BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outPath.getText()))
                 )
-                {       Alphabet alphabet = new Alphabet(alphabetType.getSelectedItem().toString(), punctuationCheckBox.getState());
+                {       Alphabet alphabet = new Alphabet(Objects.requireNonNull(alphabetType.getSelectedItem()).toString(), punctuationCheckBox.getState());
                         CipherCeasar cipherCeasar = new CipherCeasar(alphabet);
                         cipherCeasar.setInputArray(bufferedReader);
-                    for (Map.Entry symbol: cipherCeasar.getAlphabet().getAlphabetMap().toSetForward())
-                    {
-                        System.out.print(symbol.getValue() + "=" + symbol.getKey() + " ");
-                    }
+                    cipherCeasar.getAlphabet().getAlphabetMap().toSetForward().stream().map(symbol -> symbol.getValue() + "=" + symbol.getKey() + " ").forEach(System.out::print);
                     System.out.println(cipherCeasar.getAlphabet().getAlphabetMap().size());
                         System.out.println(cipherCeasar.getInputArray());
                         if(encryptButton.isSelected()) {
@@ -270,6 +266,7 @@ public class CipherMainPanel extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        var mode = "Encrypt";
         if(e.getSource() == encryptButton) {
             mode = "Encrypt";
             addFile.setVisible(false);

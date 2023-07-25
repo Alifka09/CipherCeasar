@@ -193,9 +193,9 @@ public class CipherMainPanel extends JFrame implements ActionListener {
             try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inPath.getText()));
                 BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outPath.getText()))
             )
-            {       Alphabet alphabet = new Alphabet(Objects.requireNonNull(alphabetType.getSelectedItem()).toString(), punctuationCheckBox.getState());
-                    CipherCeasar cipherCeasar = new CipherCeasar(alphabet);
-                    cipherCeasar.setInputArray(bufferedReader);
+            {       Alphabet alphabet = new Alphabet(Objects.requireNonNull(alphabetType.getSelectedItem()).toString(), punctuationCheckBox.getState()); // инициализация объекта класса Alphabet
+                    CipherCeasar cipherCeasar = new CipherCeasar(alphabet); // инициализция объекта класса CipherCeasar
+                    cipherCeasar.setInputArray(bufferedReader); // передача ссылки на входной буферизированный поток в объект CipherCeasar
                     if(encryptButton.isSelected()) {
                         cipherCeasar.encode(Integer.parseInt(key.getText()));
                     }
